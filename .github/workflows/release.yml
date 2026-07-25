@@ -22,14 +22,24 @@ jobs:
       - name: Validate skills
         run: make validate
 
-      - name: Build skill archives
+      - name: Build skill archives (claude.ai / Desktop)
         run: make build
+
+      - name: Build Cursor rules
+        run: make build-cursor
+
+      - name: Bundle Cursor rules
+        run: |
+          cd dist/cursor && zip -r ../swebok-cursor-rules.zip rules && cd -
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: swebok-skills
-          path: dist/*
+          path: |
+            dist/*.zip
+            dist/*.skill
+            dist/cursor/rules/*.mdc
 
       - name: Attach archives to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
@@ -38,3 +48,4 @@ jobs:
           files: |
             dist/*.zip
             dist/*.skill
+            dist/swebok-cursor-rules.zip

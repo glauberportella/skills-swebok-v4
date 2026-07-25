@@ -1,8 +1,14 @@
-.PHONY: build validate clean install install-project list
+.PHONY: build build-cursor validate clean list \
+        install-claude-code install-claude-code-project \
+        install-opencode install-opencode-project install-cursor
 
-## Package every skill into dist/*.zip and dist/*.skill
+## Package every skill into dist/*.zip and dist/*.skill (for claude.ai / Desktop)
 build:
 	python3 scripts/build.py
+
+## Convert skills into Cursor rules -> dist/cursor/rules/*.mdc
+build-cursor:
+	python3 scripts/build-cursor.py
 
 ## Validate frontmatter without packaging
 validate:
@@ -14,14 +20,22 @@ validate:
 clean:
 	rm -rf dist
 
-## Symlink skills into ~/.claude/skills (Claude Code, user-level)
-install:
-	bash scripts/install-claude-code.sh
-
-## Symlink skills into ./.claude/skills (Claude Code, project-level)
-install-project:
-	bash scripts/install-claude-code.sh --project
-
 ## List available skills
 list:
 	@ls -1 skills
+
+## --- Claude Code ---
+install-claude-code:
+	bash scripts/install-claude-code.sh
+install-claude-code-project:
+	bash scripts/install-claude-code.sh --project
+
+## --- OpenCode ---
+install-opencode:
+	bash scripts/install-opencode.sh
+install-opencode-project:
+	bash scripts/install-opencode.sh --project
+
+## --- Cursor (into current project's .cursor/rules) ---
+install-cursor:
+	bash scripts/install-cursor.sh

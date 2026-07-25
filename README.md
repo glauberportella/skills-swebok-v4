@@ -33,50 +33,91 @@ Each skill triggers on natural phrasing in **English and Portuguese** (e.g.
 "requisitos", "plano de testes", "threat model") — not only when you name SWEBOK.
 Skills generate output in the language you write in.
 
-## Install
+## Compatibility
 
-### Claude.ai / Claude Desktop (easiest)
+The skills are authored in the open **Agent Skills** standard (`SKILL.md` + YAML
+frontmatter), so most agentic tools use them directly. Cursor uses its own rule
+format, so we ship a converter.
 
-1. Enable **Code execution and file creation** in *Settings → Capabilities*
-   (skills need it).
-2. Download the skill archive you want from the
-   [latest release](../../releases/latest) (a `.zip` per skill), **or** build
-   them yourself (see below).
-3. In the app: **Customize → Skills → `+` → Upload a skill**, then select the
-   `.zip`. Toggle it on.
+| Tool | Format | How | One-liner |
+|---|---|---|---|
+| Claude.ai / Desktop | `SKILL.md` (ZIP upload) | build ZIPs, upload in-app | `./install.sh claude-ai` |
+| Claude Code | `SKILL.md` in `.claude/skills/` | symlink | `./install.sh claude-code` |
+| OpenCode | `SKILL.md` (native) | symlink | `./install.sh opencode` |
+| Cursor | `.mdc` rules in `.cursor/rules/` | convert + copy | `./install.sh cursor` |
+| Other Agent-Skills tools | `SKILL.md` in `.agents/skills/` | copy the folder | — |
 
-> The ZIP must contain the skill **folder** with a `SKILL.md` inside it
-> (e.g. `swebok-testing/SKILL.md`). The release archives are already shaped this way.
-
-### Claude Code
-
-Clone this repo and symlink the skills into Claude Code:
+Clone first:
 
 ```bash
 git clone https://github.com/<you>/swebok-claude-skills.git
 cd swebok-claude-skills
-./scripts/install-claude-code.sh            # user-level  (~/.claude/skills)
-./scripts/install-claude-code.sh --project  # or project-level (./.claude/skills)
 ```
 
-Because it symlinks by default, a `git pull` keeps your installed skills current.
-Use `--copy` if you prefer copies over symlinks.
+### Claude.ai / Claude Desktop
 
-### Other agents
+1. Enable **Code execution and file creation** in *Settings → Capabilities*.
+2. Get the per-skill `.zip` files: `./install.sh claude-ai` (writes to `dist/`),
+   or download them from the [latest release](../../releases/latest).
+3. In the app: **Customize → Skills → `+` → Upload a skill**, select a `.zip`,
+   toggle it on.
 
-The skills follow the open **Agent Skills** standard (`SKILL.md` + YAML
-frontmatter), so they also work in tools that read that format — copy the
-`skills/<name>/` folder into that tool's skills directory.
+> The ZIP must contain the skill **folder** with `SKILL.md` inside it
+> (e.g. `swebok-testing/SKILL.md`). Both the built and released archives are
+> already shaped this way.
+
+### Claude Code
+
+```bash
+./install.sh claude-code            # user-level  (~/.claude/skills)
+./install.sh claude-code --project  # project-level (./.claude/skills)
+```
+
+### OpenCode
+
+OpenCode reads the `SKILL.md` standard natively (it even discovers `.claude/skills`
+and `.agents/skills`). Install into its skills dir and restart OpenCode:
+
+```bash
+./install.sh opencode            # global  (~/.config/opencode/skills)
+./install.sh opencode --project  # project (./.opencode/skills)
+# then, in OpenCode:  skill_find query="swebok"
+```
+
+### Cursor
+
+Cursor project rules are `.mdc` files under `.cursor/rules/`. This converts each
+skill into a self-contained **Agent Requested** rule (fires by relevance) and
+copies them into your project:
+
+```bash
+./install.sh cursor                 # into ./.cursor/rules
+./install.sh cursor /path/to/project
+```
+
+Commit `.cursor/rules/` so your team gets them too. (Cursor also supports a plain
+`AGENTS.md` at the project root, but it always-applies; the per-skill `.mdc`
+rules are more precise.)
+
+### Other Agent-Skills tools
+
+Anything that reads the standard (e.g. via `.agents/skills/`) can use the skills
+directly — copy or symlink `skills/<name>/` into that tool's skills directory.
+
+All symlink-based installers accept `--copy` to copy instead, and a `git pull`
+keeps symlinked installs current.
 
 ## Build from source
 
 No dependencies beyond Python 3.
 
 ```bash
-make build      # -> dist/<name>.zip and dist/<name>.skill for every skill
-make validate   # check frontmatter only
-make clean      # remove dist/
-python3 scripts/build.py swebok-testing   # build a single skill
+make build          # -> dist/<name>.zip and .skill (claude.ai / Desktop)
+make build-cursor   # -> dist/cursor/rules/<name>.mdc (Cursor)
+make validate       # check frontmatter only
+make clean          # remove dist/
+python3 scripts/build.py swebok-testing          # a single skill (ZIP)
+python3 scripts/build-cursor.py swebok-testing   # a single skill (.mdc)
 ```
 
 ## How a skill works
@@ -107,10 +148,14 @@ pull the skill in.
 
 ```
 .
-├── skills/                 # the 13 skills (source of truth)
+├── skills/                 # the 13 skills (source of truth, Agent Skills standard)
+├── install.sh              # unified installer: claude-code | opencode | cursor | claude-ai
 ├── scripts/
-│   ├── build.py            # package skills into dist/
-│   └── install-claude-code.sh
+│   ├── build.py            # skills -> dist/*.zip + *.skill (claude.ai / Desktop)
+│   ├── build-cursor.py     # skills -> dist/cursor/rules/*.mdc (Cursor)
+│   ├── install-claude-code.sh
+│   ├── install-opencode.sh
+│   └── install-cursor.sh
 ├── .github/workflows/
 │   └── release.yml         # validate + attach archives to GitHub Releases on tag
 ├── Makefile
