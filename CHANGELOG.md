@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - Unified `install.sh` dispatcher (claude-code | opencode | cursor | claude-ai).
 - CI now also builds Cursor rules and attaches `swebok-cursor-rules.zip` to releases.
 
-## [1.0.0] - 2026-07-25
+## [1.0.0] - 2026-06-24
 ### Added
 - Initial release: 13 SWEBOK v4 skills (KAs 1–10, 12, 13, 15), each with
   generate / review / advise modes and English + Portuguese triggering.
