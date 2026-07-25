@@ -1,8 +1,9 @@
 # SWEBOK Skills for Claude
 
 A collection of [Claude Skills](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
-that ground software-engineering work in the **IEEE SWEBOK Guide v4.0** (Software
-Engineering Body of Knowledge). One skill per Knowledge Area, each able to
+that ground software-engineering work in the
+[**IEEE SWEBOK Guide v4.0**](https://www.computer.org/education/bodies-of-knowledge/software-engineering/v4)
+(Software Engineering Body of Knowledge). One skill per Knowledge Area, each able to
 **generate** artifacts, **review** existing ones, and **advise** on day-to-day
 technical decisions — using the vocabulary, topic structure, and best practices
 of the guide.
@@ -169,6 +170,13 @@ pull the skill in.
 By design this set omits SWEBOK KAs 11 (Models & Methods), 14 (Professional
 Practice), and 16–18 (Computing / Mathematical / Engineering Foundations). PRs
 adding them in the same format are welcome — see [CONTRIBUTING](CONTRIBUTING.md).
+
+## Reference
+
+- [SWEBOK Guide v4.0 — IEEE Computer Society](https://www.computer.org/education/bodies-of-knowledge/software-engineering/v4)
+  — the official guide these skills are distilled from (free PDF download after
+  registration). Use it as the authoritative source; the skills are a practical
+  companion, not a replacement.
 
 ## License & attribution
 
