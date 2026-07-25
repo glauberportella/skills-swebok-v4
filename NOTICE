@@ -1,0 +1,26 @@
+SWEBOK Skills for Claude
+========================
+
+This project provides Claude Skills that are INSPIRED BY and STRUCTURED AROUND
+the IEEE "Guide to the Software Engineering Body of Knowledge" (SWEBOK Guide),
+Version 4.0.
+
+Attribution and disclaimer
+--------------------------
+- "SWEBOK" is a registered trademark of the Institute of Electrical and
+  Electronics Engineers, Inc. (IEEE).
+- The SWEBOK Guide is Copyright (c) IEEE. All rights reserved by IEEE.
+- This repository is an INDEPENDENT, UNOFFICIAL work. It is not affiliated with,
+  sponsored by, or endorsed by the IEEE.
+- The skills in this repository contain ORIGINAL text: distilled, paraphrased
+  guidance, checklists, and templates written by this project's contributors.
+  They do NOT reproduce substantial verbatim portions of the SWEBOK Guide.
+- Knowledge Area names, topic titles, and standard terminology are used
+  descriptively to reference the guide's structure.
+
+If you want the authoritative source material, obtain the official SWEBOK Guide
+v4.0 from the IEEE Computer Society:
+https://www.computer.org/education/bodies-of-knowledge/software-engineering
+
+The MIT license in LICENSE applies to this project's original content only, not
+to the underlying SWEBOK Guide.
