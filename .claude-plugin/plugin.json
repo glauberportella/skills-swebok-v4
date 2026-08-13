@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "swebok-skills",
+  "displayName": "SWEBOK Skills for Claude",
+  "version": "1.1.0",
+  "description": "13 Agent Skills grounding software-engineering work in the IEEE SWEBOK Guide v4.0 — one skill per Knowledge Area, each able to generate, review, and advise.",
+  "author": {
+    "name": "Glauber Portella",
+    "url": "https://github.com/glauberportella"
+  },
+  "homepage": "https://github.com/glauberportella/skills-swebok-v4",
+  "repository": "https://github.com/glauberportella/skills-swebok-v4",
+  "license": "MIT",
+  "keywords": ["swebok", "software-engineering", "requirements", "architecture", "testing", "security"]
+}

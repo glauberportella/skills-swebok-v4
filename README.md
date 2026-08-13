@@ -48,12 +48,43 @@ format, so we ship a converter.
 | Cursor | `.mdc` rules in `.cursor/rules/` | convert + copy | `./install.sh cursor` |
 | Other Agent-Skills tools | `SKILL.md` in `.agents/skills/` | copy the folder | — |
 
-Clone first:
+### New to installing skills via the terminal? Start here
+
+Two supported paths, pick one:
+
+**Option A — Claude Code plugin marketplace (no `git clone` needed).**
+This repo publishes a `.claude-plugin/marketplace.json`, so Claude Code can
+fetch and install it directly from GitHub:
+
+```
+/plugin marketplace add glauberportella/skills-swebok-v4
+/plugin install swebok-skills@swebok-skills
+```
+
+Run both lines inside a Claude Code session (project or user scope — add
+`--scope project` to the install if you only want it in the current repo).
+That's it: no cloning, no `install.sh`, no manual file copying. Update later
+with `/plugin marketplace update swebok-skills`, remove with
+`/plugin marketplace remove swebok-skills`.
+
+> This only works for **Claude Code**. Claude.ai/Desktop, OpenCode, and Cursor
+> don't read `.claude-plugin/marketplace.json` — use Option B for those.
+
+**Option B — clone + `install.sh` (works for every tool below, including
+Claude Code).**
 
 ```bash
-git clone https://github.com/<you>/swebok-claude-skills.git
-cd swebok-claude-skills
+git clone https://github.com/glauberportella/skills-swebok-v4.git
+cd skills-swebok-v4
 ```
+
+If you're used to `npm install <package>`-style one-liners: outside of Claude
+Code's marketplace above, Agent Skills don't have a universal registry yet.
+"Installing a skill" just means putting its `SKILL.md` folder on disk where
+your tool looks for it — which is exactly what `install.sh` automates. We're
+not aware of a maintained `npx`-based installer that fetches arbitrary Agent
+Skills from any GitHub repo; if you know a trustworthy one, open an issue and
+we'll link it here instead of guessing.
 
 ### Claude.ai / Claude Desktop
 
@@ -69,6 +100,9 @@ cd swebok-claude-skills
 
 ### Claude Code
 
+The plugin marketplace flow above (Option A) is the fastest path. To install
+without the marketplace instead:
+
 ```bash
 ./install.sh claude-code            # user-level  (~/.claude/skills)
 ./install.sh claude-code --project  # project-level (./.claude/skills)
@@ -76,14 +110,23 @@ cd swebok-claude-skills
 
 ### OpenCode
 
-OpenCode reads the `SKILL.md` standard natively (it even discovers `.claude/skills`
-and `.agents/skills`). Install into its skills dir and restart OpenCode:
+OpenCode has no built-in plugin marketplace or CLI install-from-GitHub
+command — it only discovers `SKILL.md` folders it finds on disk (it even
+reads `.claude/skills` and `.agents/skills`, so an existing Claude Code
+install is picked up automatically). The supported path is `install.sh`:
 
 ```bash
 ./install.sh opencode            # global  (~/.config/opencode/skills)
 ./install.sh opencode --project  # project (./.opencode/skills)
 # then, in OpenCode:  skill_find query="swebok"
 ```
+
+> A couple of **third-party, unofficial** community CLIs
+> ([opencode-marketplace](https://github.com/NikiforovAll/opencode-marketplace),
+> [opencode-market](https://github.com/CKGrafico/opencode-market)) claim to
+> install skills into OpenCode straight from GitHub. They're not part of
+> OpenCode itself and we haven't vetted them — mentioned here for awareness,
+> not as a recommendation. `install.sh` above is the path we test and support.
 
 ### Cursor
 
@@ -149,6 +192,9 @@ pull the skill in.
 
 ```
 .
+├── .claude-plugin/
+│   ├── marketplace.json    # Claude Code plugin marketplace catalog (this repo)
+│   └── plugin.json         # plugin manifest for the marketplace entry above
 ├── skills/                 # the 13 skills (source of truth, Agent Skills standard)
 ├── install.sh              # unified installer: claude-code | opencode | cursor | claude-ai
 ├── scripts/
